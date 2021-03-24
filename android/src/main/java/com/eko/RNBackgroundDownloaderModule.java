@@ -14,8 +14,6 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.tonyodev.fetch2.Download;
-import com.tonyodev.fetch2core.Downloader;
-import com.tonyodev.fetch2okhttp.OkHttpDownloader;
 import com.tonyodev.fetch2.Error;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchConfiguration;
