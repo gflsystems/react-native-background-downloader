@@ -1,3 +1,4 @@
+  
 package com.eko;
 
 import android.annotation.SuppressLint;
@@ -25,6 +26,8 @@ import com.tonyodev.fetch2.Status;
 import com.tonyodev.fetch2core.DownloadBlock;
 import com.tonyodev.fetch2core.Func;
 import com.tonyodev.fetch2.HttpUrlConnectionDownloader;
+import com.tonyodev.fetch2core.Downloader;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -39,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import okhttp3.OkHttpClient;
 
 public class RNBackgroundDownloaderModule extends ReactContextBaseJavaModule implements FetchListener {
 
@@ -83,6 +85,7 @@ public class RNBackgroundDownloaderModule extends ReactContextBaseJavaModule imp
             .setDownloadConcurrentLimit(4)
             .setNamespace("RNBackgroundDownloader")
             .enableRetryOnNetworkGain(true)
+            .setHttpDownloader(new HttpUrlConnectionDownloader(Downloader.FileDownloaderType.PARALLEL))
             .build();
     fetch = Fetch.Impl.getInstance(fetchConfiguration);
     fetch.addListener(this);
