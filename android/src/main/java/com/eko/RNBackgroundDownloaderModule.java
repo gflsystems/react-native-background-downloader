@@ -27,8 +27,6 @@ import com.tonyodev.fetch2.Status;
 import com.tonyodev.fetch2core.DownloadBlock;
 import com.tonyodev.fetch2core.Func;
 import com.tonyodev.fetch2.HttpUrlConnectionDownloader;
-import com.tonyodev.fetch2core.Downloader;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -81,15 +79,12 @@ public class RNBackgroundDownloaderModule extends ReactContextBaseJavaModule imp
 
   public RNBackgroundDownloaderModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-    final Downloader okHttpDownloader = new OkHttpDownloader(okHttpClient,
-                Downloader.FileDownloaderType.PARALLEL);
+
     loadConfigMap();
     FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this.getReactApplicationContext())
             .setDownloadConcurrentLimit(4)
-            .setHttpDownloader(okHttpDownloader)
+            .setNamespace("RNBackgroundDownloader")
             .enableRetryOnNetworkGain(true)
-            .setHttpDownloader(new HttpUrlConnectionDownloader(Downloader.FileDownloaderType.PARALLEL))
             .build();
     fetch = Fetch.Impl.getInstance(fetchConfiguration);
     fetch.addListener(this);
