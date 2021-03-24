@@ -14,6 +14,8 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.tonyodev.fetch2.Download;
+import com.tonyodev.fetch2core.Downloader;
+import com.tonyodev.fetch2okhttp.OkHttpDownloader;
 import com.tonyodev.fetch2.Error;
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchConfiguration;
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import okhttp3.OkHttpClient;
 
 public class RNBackgroundDownloaderModule extends ReactContextBaseJavaModule implements FetchListener {
 
@@ -78,11 +81,13 @@ public class RNBackgroundDownloaderModule extends ReactContextBaseJavaModule imp
 
   public RNBackgroundDownloaderModule(ReactApplicationContext reactContext) {
     super(reactContext);
-
+    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+    final Downloader okHttpDownloader = new OkHttpDownloader(okHttpClient,
+                Downloader.FileDownloaderType.PARALLEL);
     loadConfigMap();
     FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this.getReactApplicationContext())
             .setDownloadConcurrentLimit(4)
-            .setNamespace("RNBackgroundDownloader")
+            .setHttpDownloader(okHttpDownloader)
             .enableRetryOnNetworkGain(true)
             .setHttpDownloader(new HttpUrlConnectionDownloader(Downloader.FileDownloaderType.PARALLEL))
             .build();
